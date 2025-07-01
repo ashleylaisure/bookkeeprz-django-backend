@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static "css/books/book-index.css" %}">
+{% endblock head %}
+
+{% block content %}
+<div>
+    <div class="page-header">
+        <h1>My Books</h1>
+    </div>
+
+    <div class="card-container">
+        {% for book in books %}
+            <div class="card">
+                <div class="card-content">
+                    <div class="card-img-container">
+                        <img src="" alt="">
+                    </div>
+
+                    <h2 class="card-title">{{book.name}}</h2>
+                    <p>{{book.age}}</p>
+                    <p><small>{{book.description}}</small></p>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}
+
