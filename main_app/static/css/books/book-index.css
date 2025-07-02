@@ -17,7 +17,7 @@
     width: 100%;
 }
 
-.usr-img {
+.card-img {
     width: 100%;
     border-radius: var(--card-border-radius);
 }

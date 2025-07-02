@@ -14,15 +14,18 @@
     <div class="card-container">
         {% for book in books %}
             <div class="card">
-                <div class="card-content">
-                    <div class="card-img-container">
-                        <img src="" alt="">
-                    </div>
+                <a href="{% url "book-detail" book.id %}">
+                    <div class="card-content">
+                        <div class="card-img-container">
+                                <img class="card-img" src={{book.thumbnail}} alt={{book.title}}>
+                        </div>
 
-                    <h2 class="card-title">{{book.name}}</h2>
-                    <p>{{book.age}}</p>
-                    <p><small>{{book.description}}</small></p>
-                </div>
+                        <h2 class="card-title">{{book.title}}</h2>
+                        <p>{{book.author}}</p>
+                        <p>added {{book.date_added}}</p>
+                    </div>
+                </a>
+                
             </div>
         {% endfor %}
     </div>
