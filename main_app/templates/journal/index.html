@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static "css/books/book-index.css" %}">
+{% endblock head %}
+
+{% block content %}
+<div>
+    <div class="page-header">
+        <h1>Journal Entries for 
+            <a href="{% url "book-detail" book.id %}">{{book.title}}</a>
+        </h1>
+    </div>
+
+    <hr>
+
+    <div>
+        <h3>Add a Journal Entry</h3>
+        <form 
+            action="{% url "add-journal" book.id %}" 
+            method="POST" 
+            class="subsection-content" 
+            autocomplete="off">
+            {% csrf_token %}
+
+            {{journal_form.as_p}}
+            <button type="submit" class="btn submit">Add</button>
+        </form>
+    </div>
+
+    
+
+    <div class="card-container">
+        {% for journal in journals %}
+        {% comment %} <a href="{% url "journal-detail" journal.id %}"> {% endcomment %}
+            <div class="card">
+                <div class="card-content">
+                    <h2 class="card-title">{{journal.title}}</h2>
+                    <p>added {{journal.date_added}}</p>
+                </div>
+                
+            </div>
+        {% comment %} </a> {% endcomment %}
+        {% endfor %}
+    </div>
+</div>
+{% endblock content %}

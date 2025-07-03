@@ -38,6 +38,43 @@ GENRE_CHOICES = (
     ('young_adult', 'Young Adult'),
 )
 
+MOOD_CHOICES = (
+    ('anxious', 'Anxious'),
+    ('calm', 'Calm'),
+    ('cheerful', 'Cheerful'),
+    ('depressing','Depressing'),
+    ('eerie','Eerie'),
+    ('festive','Festive'),
+    ('foreboding','Foreboding'),
+    ('frightening','Frightening'),
+    ('frustrated','Frustrated'),
+    ('gloomy','Gloomy'),
+    ('hopeless','Hopeless'),
+    ('humorous','Humorous'),
+    ('idyllic','Idyllic'),
+    ('joyful','Joyful'),
+    ('light-hearted','Light-hearted'),
+    ('lonely','Lonely'),
+    ('mlancholic','Melancholic'),
+    ('mysterious','Mysterious'),
+    ('ominous','Ominous'),
+    ('optimistic','Optimistic'),
+    ('panicked','Panicked'),
+    ('peaceful','Peaceful'),
+    ('pensive','Pensive'),
+    ('pessimistic','Pessimistic'),
+    ('reflective','Reflective'),
+    ('romantic','Romantic'),
+    ('sad','Sad'),
+    ('sentimental','Sentimental'),
+    ('stressed','Stressed'),
+    ('suspenseful','Suspenseful'),
+    ('tense','Tense'),
+    ('uneasy','Uneasy'),
+    ('uplifting','Uplifting'),
+    ('whimsical','Whimsical'),
+)
+
 # Create your models here.
 class Book(models.Model):
     title = models.CharField(max_length=250)
@@ -61,3 +98,19 @@ class Book(models.Model):
     def get_absolute_url(self):
         return reverse("book-detail", kwargs={"book_id": self.id})
     
+
+class Journal(models.Model):
+    title = models.CharField(max_length=100, blank=True, null=True)
+    notes = models.TextField(max_length=250)
+    mood = models.CharField(max_length=20, choices=MOOD_CHOICES, blank=True, null=True)
+    chapter = models.CharField(max_length=100, blank=True, null=True)
+    page = models.IntegerField(blank=True, null=True)
+    date_added = models.DateField(auto_now_add=True)
+    
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"Journal entry for {self.book.title} added on {self.date_added}"
+    
+    class Meta:
+        ordering = ['-date']

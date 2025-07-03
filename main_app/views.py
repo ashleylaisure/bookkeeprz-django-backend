@@ -1,7 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Book
+from .models import Book, Journal
 from .filters import BookFilter, StatusFilter
+from .forms import JournalForm
 
 
 # Create your views here.
@@ -57,3 +58,27 @@ class BookDelete(DeleteView):
     model = Book
     template_name = "books/book_confirm_delete.html"
     success_url = '/books/'
+    
+# --------------------------------  Journal
+def journal_index(request, book_id):
+    book = Book.objects.get(id=book_id)
+    journals = book.journal_set.all()
+    
+    # adding new journal entries on same page?
+    journal_form = JournalForm()
+    
+    return render(request, 'journal/index.html', {
+        'book' : book,
+        'journals' : journals,
+        'journal_form' : journal_form,
+    })
+    
+def add_journal(request, book_id):
+    form = JournalForm(request.POST)
+    
+    if form.is_valid():
+        new_journal = form.save(commit=False)
+        new_journal.book_id = book_id
+        new_journal.save()
+        
+    return redirect('journal-index', book_id=book_id)

@@ -20,8 +20,10 @@
         <div class="book-actions">
             <a href="{% url "book-update" book.id %}" class="btn warn">Edit</a>
             <a href="{% url "book-delete" book.id %}" class="btn danger">Delete</a>
+            <a href="{% url "journal-index" book.id %}" class="btn danger">Journal Entries({{book.journal_set.count}})</a>
         </div>
     </div>
+
 </div>
 
 {% endblock content %}

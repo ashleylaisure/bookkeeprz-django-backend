@@ -1,4 +1,7 @@
 from django import forms
+from .models import Journal
 
-# class BookTitleFilterForm(forms.Form):
-#     name = forms.CharField()
+class JournalForm(forms.ModelForm):
+    class Meta:
+        model = Journal
+        fields = ['title', 'notes', 'mood', 'chapter', 'page']

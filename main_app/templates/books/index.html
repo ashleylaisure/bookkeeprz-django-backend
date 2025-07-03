@@ -13,6 +13,8 @@
 
     <div>
         <form action="{% url "book-index" %}" method="GET">
+            {% csrf_token %}
+            
             {{form.search.label_tag}} {{form.search}}
             {{form.status.label_tag}} {{form.status}}
             {{form.genre.label_tag}} {{form.genre}}
