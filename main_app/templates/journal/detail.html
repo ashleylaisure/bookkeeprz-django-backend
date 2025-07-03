@@ -1,0 +1,39 @@
+{% extends "base.html" %} {% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static "css/journal/journal-detail.css" %}">
+{% endblock head %}
+
+{% block content %}
+<div class="container">
+    <div class="book-container">
+        <div >
+            <h1>Journal Entry For: 
+                <a href="{% url "journal-index" journal.book.id%}">
+                    {{journal.book.title}}
+                </a>
+            </h1>
+            <img class="book-img" src={{journal.book.thumbnail}} alt={{journal.book.title}}>
+        </div>
+
+        <hr>
+        
+        <div class="book-detail">
+            <h1>{{journal.title}}</h1>
+            <h2>{{journal.notes}}</h2>
+            <p>{{journal.mood}}</p>
+            <p>{{journal.chapter}}</p>
+            <p>{{journal.page}}</p>
+            <p>created {{journal.date_added}}</p>
+
+        </div>
+
+        <div class="book-actions">
+            <a href="{% url "journal-update" journal.id %}" class="btn warn">Edit</a>
+            <a href="{% url "journal-delete" journal.id %}" class="btn danger">Delete</a>
+        </div>
+    </div>
+
+</div>
+
+{% endblock content %}

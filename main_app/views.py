@@ -1,8 +1,8 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.urls import reverse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Book, Journal
 from .filters import BookFilter, StatusFilter
-from .forms import JournalForm
 
 
 # Create your views here.
@@ -64,21 +64,54 @@ def journal_index(request, book_id):
     book = Book.objects.get(id=book_id)
     journals = book.journal_set.all()
     
-    # adding new journal entries on same page?
-    journal_form = JournalForm()
-    
     return render(request, 'journal/index.html', {
         'book' : book,
         'journals' : journals,
-        'journal_form' : journal_form,
     })
     
-def add_journal(request, book_id):
-    form = JournalForm(request.POST)
+class JournalCreate(CreateView):
+    model = Journal
+    fields = ['title', 'notes', 'mood', 'chapter', 'page']
+    template_name = 'journal/journal_form.html'
     
-    if form.is_valid():
-        new_journal = form.save(commit=False)
-        new_journal.book_id = book_id
-        new_journal.save()
-        
-    return redirect('journal-index', book_id=book_id)
+    def form_valid(self, form):
+        book = get_object_or_404(Book, pk=self.kwargs['book_id'])
+        form.instance.book = book
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('journal-index', kwargs={'book_id': self.kwargs['book_id']})
+    
+
+def journal_detail(request, journal_id):
+    journal = Journal.objects.get(id=journal_id)
+    return render(request, 'journal/detail.html', {'journal' : journal })
+
+class JournalUpdate(UpdateView):
+    model = Journal
+    fields = ['title', 'notes', 'mood', 'chapter', 'page']
+    template_name = "journal/journal_form.html"
+    
+class JournalDelete(DeleteView):
+    model = Journal
+    template_name = "journal/journal_confirm_delete.html"
+    
+    def get_success_url(self):
+        book_id = self.object.book.id 
+        return reverse('journal-index', kwargs={'book_id' : book_id})
+    
+# --------------------------------  Journal All
+def journal_index_all(request):
+    journal = Journal.objects.all()
+
+    return render(request, 'journal/index_all.html', { 
+        'journal' : journal,
+        } )
+    
+class NewJournalCreate(CreateView):
+    model = Journal
+    fields = ['title', 'notes', 'mood', 'chapter', 'page', 'book']
+    template_name = 'journal/journal_form.html'
+    
+    def get_success_url(self):
+        return reverse('journal-index', kwargs={'book_id': self.object.book.id})

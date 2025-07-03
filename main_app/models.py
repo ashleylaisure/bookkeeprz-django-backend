@@ -113,4 +113,8 @@ class Journal(models.Model):
         return f"Journal entry for {self.book.title} added on {self.date_added}"
     
     class Meta:
-        ordering = ['-date']
+        ordering = ['date_added']
+        
+    def get_absolute_url(self):
+        return reverse("journal-detail", kwargs={"journal_id": self.id})
+    

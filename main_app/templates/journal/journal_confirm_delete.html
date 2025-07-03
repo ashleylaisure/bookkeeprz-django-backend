@@ -1,0 +1,21 @@
+{% extends "base.html" %} {% load static %}
+
+{% block head %}{% endblock head %}
+
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            <h1>Delete Journal Entry?</h1>
+            <img src="{% static "images/24011467_6855439.jpg" %}" alt="book img">
+        </div>
+
+        <h2>Are you sure you want to delete {{journal.title}}?</h2>
+
+        <form action="" method="post" class="form">
+            {% csrf_token %}
+
+            <a href="{% url "journal-detail" journal.id %}" class="btn secondary">Cancel</a>
+            <button type="submit" class="btn danger">Yes-Delete!</button>
+        </form>
+    </div>
+{% endblock content %}

@@ -15,5 +15,11 @@ urlpatterns = [
     
     # Journal (by Book)
     path('books/<int:book_id>/journal/', views.journal_index, name="journal-index"),
-    path('books/<int:book_id>/add-journal/', views.add_journal, name="add-journal")
+    path('books/<int:book_id>/journal/new/', views.JournalCreate.as_view(), name="journal-create"),
+    path('journal/<int:journal_id>/', views.journal_detail, name='journal-detail'), 
+    path('journal/<int:pk>/update/', views.JournalUpdate.as_view(), name='journal-update'),
+    path('journal/<int:pk>/delete/', views.JournalDelete.as_view(), name='journal-delete'), 
+    
+    path('journal/', views.journal_index_all, name="journal-index-all"),
+    path('journal/new', views.NewJournalCreate.as_view(), name="new-journal-create"),
 ]
