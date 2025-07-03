@@ -7,6 +7,7 @@ urlpatterns = [
     
     # Books
     path('books/', views.book_index, name="book-index"),
+    path('books/status/', views.book_index_status, name="book-index-status"), 
     path('books/<int:book_id>/', views.book_detail, name='book-detail'),
     path('books/create/', views.BookCreate.as_view(), name="book-create"),
     path('books/<int:pk>/update/', views.BookUpdate.as_view(), name='book-update'), 

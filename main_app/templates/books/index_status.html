@@ -8,15 +8,22 @@
 {% block content %}
 <div>
     <div class="page-header">
-        <h1>My Books</h1>
+        <h1>Reading Status</h1>
     </div>
 
     <div>
-        <form action="{% url "book-index" %}" method="GET">
-            {{form.search.label_tag}} {{form.search}}
-            {{form.status.label_tag}} {{form.status}}
-            {{form.genre.label_tag}} {{form.genre}}
-            <button type="submit" class="btn success">Search</button>
+        <form action="{% url "book-index-status" %}" method="GET">
+            <div class="status-buttons">
+                {% for status_value, status_label in form.fields.status.choices %}
+                    {% if status_value %}
+                        <button type="submit" name="status" value="{{status_value}}" 
+                            class="{% if active_status == status_value %} btn warn {% else %} btn success {% endif %}">
+                            {{status_label}}
+                        </button>
+                    {% endif %}
+                {% endfor %}
+            </div>
+            
         </form>
     </div>
 
