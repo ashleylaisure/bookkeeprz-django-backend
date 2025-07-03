@@ -11,6 +11,15 @@
         <h1>My Books</h1>
     </div>
 
+    <div>
+        <form action="{% url "book-index" %}" method="GET">
+            {{form.as_p}}
+            <input type="submit" value="Submit" class="btn success" name="" id="">
+        </form>
+    </div>
+
+    <hr>
+
     <div class="card-container">
         {% for book in books %}
             <div class="card">

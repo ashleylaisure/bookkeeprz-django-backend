@@ -16,6 +16,11 @@
             <h2>{{book.author}}</h2>
             <p>{{book.status}}</p>
         </div>
+
+        <div class="book-actions">
+            <a href="{% url "book-update" book.id %}" class="btn warn">Edit</a>
+            <a href="{% url "book-delete" book.id %}" class="btn danger">Delete</a>
+        </div>
     </div>
 </div>
 
