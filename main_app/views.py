@@ -2,7 +2,8 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from .models import Book, Journal
-from .filters import BookFilter, StatusFilter
+from .filters import BookFilter, StatusFilter, JournalFilter
+from .forms import BookForm
 
 
 # Create your views here.
@@ -46,12 +47,12 @@ def book_detail(request, book_id):
 
 class BookCreate(CreateView):
     model = Book
-    fields = '__all__'
+    form_class = BookForm
     template_name = "books/book_form.html"
     
 class BookUpdate(UpdateView):
     model = Book
-    fields = '__all__'
+    form_class = BookForm
     template_name = "books/book_form.html"
     
 class BookDelete(DeleteView):
@@ -102,10 +103,11 @@ class JournalDelete(DeleteView):
     
 # --------------------------------  Journal All
 def journal_index_all(request):
-    journal = Journal.objects.all()
+    journal_filter = JournalFilter(request.GET, queryset=Journal.objects.all())
 
     return render(request, 'journal/index_all.html', { 
-        'journal' : journal,
+        'form' : journal_filter.form,
+        'journal' : journal_filter.qs,
         } )
     
 class NewJournalCreate(CreateView):

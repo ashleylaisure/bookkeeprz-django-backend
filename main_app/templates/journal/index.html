@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load static %}
+{% load static %} {% load humanize %}
 
 {% block head %}
 <link rel="stylesheet" href="{% static "css/books/book-index.css" %}">
@@ -37,7 +37,7 @@
             <div class="card">
                 <div class="card-content">
                     <h2 class="card-title">{{journal.title}}</h2>
-                    <p>added {{journal.date_added}}</p>
+                        <p>updated {{journal.last_updated | naturaltime }}</p>
                 </div>
                 
             </div>

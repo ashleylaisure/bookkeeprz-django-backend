@@ -90,7 +90,7 @@ class Book(models.Model):
     total_pages = models.IntegerField(blank=True, null=True)
     total_time = models.DurationField(blank=True, null=True)
     re_read = models.BooleanField(default=False)
-    date_added = models.DateField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
         return self.title
@@ -105,7 +105,8 @@ class Journal(models.Model):
     mood = models.CharField(max_length=20, choices=MOOD_CHOICES, blank=True, null=True)
     chapter = models.CharField(max_length=100, blank=True, null=True)
     page = models.IntegerField(blank=True, null=True)
-    date_added = models.DateField(auto_now_add=True)
+    date_added = models.DateTimeField(auto_now_add=True)
+    last_updated = models.DateTimeField(auto_now=True)
     
     book = models.ForeignKey(Book, on_delete=models.CASCADE)
     
@@ -117,4 +118,4 @@ class Journal(models.Model):
         
     def get_absolute_url(self):
         return reverse("journal-detail", kwargs={"journal_id": self.id})
-    
+

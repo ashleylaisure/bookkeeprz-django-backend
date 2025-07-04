@@ -1,12 +1,24 @@
 from django import forms
-from .models import Journal
+from .models import Book
 
-class JournalForm(forms.ModelForm):
+class BookForm(forms.ModelForm):
     class Meta:
-        model = Journal
-        fields = ['title', 'notes', 'mood', 'chapter', 'page']
-        
-class JournalAllForm(forms.ModelForm):
-    class Meta:
-        model = Journal
-        fields = ['title', 'notes', 'mood', 'chapter', 'page', 'book']
+        model = Book
+        fields = '__all__'
+        widgets = {
+            'start_date' : forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={
+                    'placeholder': 'Select a date',
+                    'type': 'date'
+                }
+            ),
+            'finish_date' : forms.DateInput(
+                format=('%Y-%m-%d'),
+                attrs={
+                    'placeholder': 'Select a date',
+                    'type': 'date'
+                }
+            ),
+        }
+
