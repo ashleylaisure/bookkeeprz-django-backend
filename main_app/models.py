@@ -75,7 +75,43 @@ MOOD_CHOICES = (
     ('whimsical','Whimsical'),
 )
 
+COLOR_CHOICES = (
+    ('aqua', 'Aqua'),
+    ('blue', 'Blue'),
+    ('fuchsia','Fuchsia'),
+    ('gray','Gray'),
+    ('green','Green'),
+    ('lime','Lime'),
+    ('maroon','Maroon'),
+    ('navy','Navy'),
+    ('olive','Olive'),
+    ('purple','Purple'),
+    ('red','Red'),
+    ('silver','Silver'),
+    ('teal','Teal'),
+    ('yellow','Yellow'),
+    ('fornflowerblue','CornflowerBlue'),
+    ('indianred','IndianRed'),
+    ('darkcyan','DarkCyan'),
+    ('lightseagreen','LightSeaGreen'),
+    ('mediumpurple','MediumPurple'),
+    ('darkslategray','DarkSlateGray'),
+)
+
 # Create your models here.
+
+class Bookshelf(models.Model):
+    name = models.CharField(max_length=250)
+    description = models.TextField(max_length=250, null=True, blank=True)
+    color = models.CharField(max_length=20, choices=COLOR_CHOICES)
+    
+    def __str__(self):
+        return self.name
+    
+    def get_absolute_url(self):
+        return reverse("bookshelf-detail", kwargs={"bookshelf_id": self.id})
+    
+    
 class Book(models.Model):
     title = models.CharField(max_length=250)
     author = models.CharField(max_length=250, null=True, blank=True)
@@ -91,6 +127,8 @@ class Book(models.Model):
     total_time = models.DurationField(blank=True, null=True)
     re_read = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now_add=True)
+    
+    bookshelf = models.ManyToManyField(Bookshelf)
     
     def __str__(self):
         return self.title
@@ -119,3 +157,5 @@ class Journal(models.Model):
     def get_absolute_url(self):
         return reverse("journal-detail", kwargs={"journal_id": self.id})
 
+
+    

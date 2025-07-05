@@ -1,0 +1,20 @@
+{% extends "base.html" %} {% load static %}
+
+{% block head %}
+<link rel="stylesheet" href="{% static "css/bookshelves/bookshelf-detail.css" %}">
+{% endblock head %}
+
+{% block content %}
+<div class="container">
+    <div class="card" style="border-color: {{bookshelf.color}}">
+        <div class="card-bg" style="background-color: {{bookshelf.color}}"></div>
+        <div class="card-content">
+            <h2>{{bookshelf.name}}</h2>
+            <p>{{bookshelf.description}}</p>
+        </div>
+    </div>
+    <a href="{% url "bookshelf-update" bookshelf.id%}" class="btn warn">Edit</a>
+    <a href="{% url "bookshelf-delete" bookshelf.id%}" class="btn danger">Delete</a>
+</div>
+{% endblock  %}
+

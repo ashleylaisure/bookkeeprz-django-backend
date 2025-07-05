@@ -22,4 +22,11 @@ urlpatterns = [
     
     path('journal/', views.journal_index_all, name="journal-index-all"),
     path('journal/new', views.NewJournalCreate.as_view(), name="new-journal-create"),
+    
+    # Bookshelf
+    path('bookshelves/', views.bookshelf_index, name="bookshelf-index"), 
+    path('bookshelves/create/', views.BookshelfCreate.as_view(), name='bookshelf-create'), 
+    path('bookshelves/<int:bookshelf_id>/', views.bookshelf_detail, name="bookshelf-detail"),
+    path('bookshelves/<int:pk>/update/', views.BookshelfUpdate.as_view(), name="bookshelf-update"), 
+    path('bookshelves/<int:pk>/delete/', views.BookshelfDelete.as_view(), name="bookshelf-delete"),
 ]

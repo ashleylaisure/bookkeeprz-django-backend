@@ -1,26 +1,27 @@
-{% extends "base.html" %}
-{% load static %} {% load humanize %}
+{% extends "base.html" %} {% load static %} {% load humanize %}
 
 {% block head %}
+{% comment %} <link rel="stylesheet" href="{% static "css/bookshelves/bookshelf-index.css" %}"> {% endcomment %}
 <link rel="stylesheet" href="{% static "css/books/book-index.css" %}">
 {% endblock head %}
 
 {% block content %}
-<div>
-    <div class="page-header">
-        <h1>Reading Status</h1>
-    </div>
+<div class="container">
+    <section class="page-header">
+        <h1>All Bookshelves</h1>
+        <a href="{% url "bookshelf-create" %}" class="btn warn">Add a Bookshelf</a>
+    </section>
 
     <div>
-        <form action="{% url "book-index-status" %}" method="GET">
-            <div class="status-buttons">
-                {% for status_value, status_label in form.fields.status.choices %}
-                    {% if status_value %}
-                        <button type="submit" name="status" value="{{status_value}}" 
-                            class="{% if active_status == status_value %} btn warn {% else %} btn success {% endif %}">
-                            {{status_label}} 
-                        </button>
-                    {% endif %}
+        <form action="{% url "bookshelf-index" %}" method="GET">
+            <div class="filter-buttons">
+                {% for bookshelf in bookshelves %}
+
+                    <button type="submit" name="bookshelf" value="{{bookshelf.id}}" 
+                        class="{% if bookshelf.id == active_bookshelf %} btn warn {% else %} btn success {% endif %}">
+                        {{bookshelf.name}} ({{bookshelf.book_set.count}})
+                    </button>
+
                 {% endfor %}
             </div>
         </form>
@@ -48,4 +49,3 @@
     </div>
 </div>
 {% endblock content %}
-

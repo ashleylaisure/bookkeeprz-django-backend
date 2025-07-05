@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from .models import Book, Journal
-from .filters import BookFilter, StatusFilter, JournalFilter
+from django.views.generic import ListView, DetailView
+from .models import Book, Journal, Bookshelf
+from .filters import BookFilter, StatusFilter, JournalFilter, BookshelfFilter
 from .forms import BookForm
 
 
@@ -30,13 +31,13 @@ def book_index_status(request):
     
     if 'status' not in get_data:
         get_data['status'] = 'reading'
-
-    book_status = StatusFilter(get_data, queryset=Book.objects.all())
+        
+    book_filter = StatusFilter(get_data, queryset=Book.objects.all())
     
     context = {
-        'form' : book_status.form,
-        'books' : book_status.qs,
-        'active_status' : get_data['status']
+        'form' : book_filter.form,
+        'books' : book_filter.qs,
+        'active_status' : get_data.get('status'),
     }
     
     return render(request, 'books/index_status.html', context)
@@ -117,3 +118,40 @@ class NewJournalCreate(CreateView):
     
     def get_success_url(self):
         return reverse('journal-index', kwargs={'book_id': self.object.book.id})
+    
+# --------------------------------  Bookshelves
+class BookshelfCreate(CreateView):
+    model = Bookshelf
+    fields = '__all__'
+    template_name = "bookshelves/bookshelf_form.html"
+
+
+    
+def bookshelf_detail(request, bookshelf_id):
+    bookshelf = Bookshelf.objects.get(id=bookshelf_id)
+    return render(request, 'bookshelves/detail.html', {'bookshelf' : bookshelf })
+
+class BookshelfUpdate(UpdateView):
+    model = Bookshelf
+    fields = '__all__'
+    template_name = "bookshelves/bookshelf_form.html"
+    
+class BookshelfDelete(DeleteView):
+    model = Bookshelf
+    template_name = "bookshelves/bookshelf_confirm_delete.html"
+    success_url = '/bookshelves/'
+    
+    
+def bookshelf_index(request):
+    bookshelves = Bookshelf.objects.all()
+
+    book_filter = BookshelfFilter(request.GET, queryset=Book.objects.all())
+    
+    context = {
+        'form' : book_filter.form,
+        'books' : book_filter.qs,
+        'active_bookshelf' : int(request.GET.get('bookshelf')) if request.GET.get('bookshelf') else None,
+        'bookshelves' : bookshelves
+    }
+    
+    return render(request, 'bookshelves/index.html', context)
