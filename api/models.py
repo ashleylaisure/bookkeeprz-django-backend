@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import User
 
 STATUS_CHOICES = (
     ('tbr' , 'TBR'),
@@ -127,6 +128,8 @@ class Book(models.Model):
     total_time = models.DurationField(blank=True, null=True)
     re_read = models.BooleanField(default=False)
     date_added = models.DateTimeField(auto_now_add=True)
+    
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
     
     bookshelf = models.ManyToManyField(Bookshelf)
     

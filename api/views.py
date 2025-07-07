@@ -6,6 +6,11 @@ from .models import Book, Journal, Bookshelf
 from .filters import BookFilter, StatusFilter, JournalFilter, BookshelfFilter
 from .forms import BookForm
 
+from django.contrib.auth.models import User
+from rest_framework import generics
+from .serializers import UserSerializer, BookSerializer
+from rest_framework.permissions import IsAuthenticated, AllowAny
+
 
 # Create your views here.
 def home(request):
@@ -14,7 +19,36 @@ def home(request):
 def about(request):
     return render(request, 'about.html')
 
+# --------------------------------  User
+class CreateUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
+
 # --------------------------------  Books
+class BookListCreate(generics.ListCreateAPIView):
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Book.objects.filter(author=user)
+    
+    def perform_create(self, serializer):
+        if serializer.is_valid():
+            serializer.save(user=self.request.user)
+        else:
+            print(serializer.errors)
+
+class BookDelete(generics.DestroyAPIView):
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Book.objects.filter(author=user)
+
+
 # book index - search
 def book_index(request):
     book_filter = BookFilter(request.GET, queryset=Book.objects.all())
