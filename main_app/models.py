@@ -122,7 +122,7 @@ class Book(models.Model):
     format = models.CharField(max_length=10, choices=FORMAT_CHOICES, blank=True, null=True)
     start_date = models.DateField(blank=True, null=True)
     finish_date = models.DateField(blank=True, null=True)
-    genre = models.CharField(max_length=20, choices=GENRE_CHOICES)
+    genre = models.CharField(max_length=20, choices=GENRE_CHOICES, default='fantasy')
     publication_year = models.IntegerField(blank=True, null=True)
     total_pages = models.IntegerField(blank=True, null=True)
     total_time = models.DurationField(blank=True, null=True)

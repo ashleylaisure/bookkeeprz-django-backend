@@ -1,24 +1,16 @@
 from django.urls import path, include
 from . import views
-from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
+
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('about/', views.about, name="about"), 
     
-    # User
-    path("user/register/", views.CreateUserView.as_view(), name="register"),
-    path("token/", TokenObtainPairView.as_view(), name="get_token"),
-    path('token/refresh/', TokenRefreshView.as_view(), name="refresh"),
-    path('auth/', include("rest_framework.urls")),
-    
     # Books
     path('books/', views.BookListCreate.as_view(), name="book-index"),
+    path('books/<int:pk>/', views.BookDetail.as_view(), name='book-detail'),
     path('books/<int:pk>/delete/', views.BookDelete.as_view(), name='book-delete'),
-    
-    
-    
-    
+
     # path('books/', views.book_index, name="book-index"),
     path('books/status/', views.book_index_status, name="book-index-status"), 
     path('books/<int:book_id>/', views.book_detail, name='book-detail'),

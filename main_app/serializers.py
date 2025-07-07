@@ -15,5 +15,5 @@ class UserSerializer(serializers.ModelSerializer):
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = '__all__'
+        fields = ['id', 'title', 'author', "date_added", "user"]
         extra_kwargs = {"user": {"read_only": True}}

@@ -7,7 +7,7 @@ from .filters import BookFilter, StatusFilter, JournalFilter, BookshelfFilter
 from .forms import BookForm
 
 from django.contrib.auth.models import User
-from rest_framework import generics
+from rest_framework import generics, permissions
 from .serializers import UserSerializer, BookSerializer
 from rest_framework.permissions import IsAuthenticated, AllowAny
 
@@ -31,23 +31,25 @@ class BookListCreate(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        user = self.request.user
-        return Book.objects.filter(author=user)
+        return Book.objects.filter(user=self.request.user)
     
     def perform_create(self, serializer):
-        if serializer.is_valid():
-            serializer.save(user=self.request.user)
-        else:
-            print(serializer.errors)
+        serializer.save(user=self.request.user)
+
 
 class BookDelete(generics.DestroyAPIView):
     serializer_class = BookSerializer
     permission_classes = [IsAuthenticated]
     
     def get_queryset(self):
-        user = self.request.user
-        return Book.objects.filter(author=user)
+        return Book.objects.filter(user=self.request.user)
+    
+class BookDetail(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]
 
+    def get_queryset(self):
+        return Book.objects.filter(user=self.request.user)
 
 # book index - search
 def book_index(request):
