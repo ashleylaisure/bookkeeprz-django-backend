@@ -1,6 +1,5 @@
 from django.db import models
 from django.urls import reverse
-from django.contrib.auth.models import User
 
 STATUS_CHOICES = (
     ('tbr' , 'TBR'),
@@ -116,17 +115,17 @@ COLOR_CHOICES = (
 class Book(models.Model):
     title = models.CharField(max_length=250)
     author = models.CharField(max_length=250, null=True, blank=True)
-    description = models.TextField(max_length=500, null=True, blank=True)
-    thumbnail = models.URLField(blank=True, null=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='tbr')
-    format = models.CharField(max_length=10, choices=FORMAT_CHOICES, blank=True, null=True)
-    start_date = models.DateField(blank=True, null=True)
-    finish_date = models.DateField(blank=True, null=True)
-    genre = models.CharField(max_length=20, choices=GENRE_CHOICES, default='fantasy')
-    publication_year = models.IntegerField(blank=True, null=True)
-    total_pages = models.IntegerField(blank=True, null=True)
-    total_time = models.DurationField(blank=True, null=True)
-    re_read = models.BooleanField(default=False)
+    # description = models.TextField(max_length=500, null=True, blank=True)
+    # thumbnail = models.URLField(blank=True, null=True)
+    # status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='tbr')
+    # format = models.CharField(max_length=10, choices=FORMAT_CHOICES, blank=True, null=True)
+    # start_date = models.DateField(blank=True, null=True)
+    # finish_date = models.DateField(blank=True, null=True)
+    # genre = models.CharField(max_length=20, choices=GENRE_CHOICES, default='fantasy')
+    # publication_year = models.IntegerField(blank=True, null=True)
+    # total_pages = models.IntegerField(blank=True, null=True)
+    # total_time = models.DurationField(blank=True, null=True)
+    # re_read = models.BooleanField(default=False)
     
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
@@ -138,8 +137,8 @@ class Book(models.Model):
     def __str__(self):
         return self.title
     
-    def get_absolute_url(self):
-        return reverse("book-detail", kwargs={"book_id": self.id})
+    # def get_absolute_url(self):
+    #     return reverse("book-detail", kwargs={"book_id": self.id})
     
 
 class Journal(models.Model):
