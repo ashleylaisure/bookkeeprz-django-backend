@@ -101,22 +101,22 @@ COLOR_CHOICES = (
 
 # Create your models here.
 
-class Bookshelf(models.Model):
-    name = models.CharField(max_length=250)
-    description = models.TextField(max_length=250, null=True, blank=True)
-    color = models.CharField(max_length=20, choices=COLOR_CHOICES)
+# class Bookshelf(models.Model):
+#     name = models.CharField(max_length=250)
+#     description = models.TextField(max_length=250, null=True, blank=True)
+#     color = models.CharField(max_length=20, choices=COLOR_CHOICES)
     
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
     
-    def get_absolute_url(self):
-        return reverse("bookshelf-detail", kwargs={"bookshelf_id": self.id})
+#     def get_absolute_url(self):
+#         return reverse("bookshelf-detail", kwargs={"bookshelf_id": self.id})
     
     
 class Book(models.Model):
     title = models.CharField(max_length=250)
     author = models.CharField(max_length=250, null=True, blank=True)
-    description = models.TextField(max_length=250, blank=True)
+    description = models.TextField(max_length=500, null=True, blank=True)
     thumbnail = models.URLField(blank=True, null=True)
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='tbr')
     format = models.CharField(max_length=10, choices=FORMAT_CHOICES, blank=True, null=True)
@@ -127,11 +127,13 @@ class Book(models.Model):
     total_pages = models.IntegerField(blank=True, null=True)
     total_time = models.DurationField(blank=True, null=True)
     re_read = models.BooleanField(default=False)
-    date_added = models.DateTimeField(auto_now_add=True)
     
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
+    created = models.DateTimeField(auto_now_add=True)
+    modified = models.DateTimeField(auto_now=True)
     
-    bookshelf = models.ManyToManyField(Bookshelf)
+    # user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="books")
+    
+    # bookshelf = models.ManyToManyField(Bookshelf)
     
     def __str__(self):
         return self.title
@@ -159,6 +161,3 @@ class Journal(models.Model):
         
     def get_absolute_url(self):
         return reverse("journal-detail", kwargs={"journal_id": self.id})
-
-
-    
